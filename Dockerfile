@@ -1,5 +1,6 @@
 FROM openjdk:17
-COPY ./src /usr/src/myapp
+
+COPY target/*.jar /usr/src/myapp/app.jar
 WORKDIR /usr/src/myapp
-RUN javac App.java
-CMD ["java", "App"]
+
+CMD ["java", "-jar", "app.jar"]
