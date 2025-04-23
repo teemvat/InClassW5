@@ -14,7 +14,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 cleanWs()
-                git branch: 'master', url: 'https://github.com/teemvat/InClassW5.git'
+                git branch: 'main', url: 'https://github.com/teemvat/InClassW5.git'
             }
         }
 
