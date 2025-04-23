@@ -5,6 +5,9 @@ pipeline {
         SONARQUBE_SERVER = 'SonarQubeServer'
         DOCKER_IMAGE = 'teemvat/otp-inclass-w5'
         DOCKER_TAG = 'latest'
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21'
+        JMETER_HOME = 'C:\\tools\\apache-jmeter-5.6.3'
+        PATH = "${JAVA_HOME}\\bin;${JMETER_HOME}\\bin;${PATH}"
     }
 
     stages {
@@ -20,6 +23,13 @@ pipeline {
                 bat 'mvn clean package'
             }
         }
+
+        stage('Non-Functional Test') {
+            steps {
+                bat 'jmeter -n -t /demo.jmx -l result.jtl'
+            }
+        }
+
 
         stage('SonarQube Analysis') {
             steps {
@@ -46,5 +56,13 @@ pipeline {
                 }
             }
         }
+
+        post {
+            always {
+                archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
+                perfReport sourceDataFiles: 'result.jtl'
+            }
+        }
+
     }
 }
