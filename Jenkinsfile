@@ -26,7 +26,8 @@ pipeline {
 
         stage('Non-Functional Test') {
             steps {
-                bat 'jmeter -n -t demo.jmx -l result.jtl'
+                bat 'jmeter -n -t jmeter/demo.jmx -l result.jtl'
+
             }
         }
 
