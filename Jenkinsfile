@@ -14,7 +14,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 cleanWs()
-                git branch: 'master', url: 'https://github.com/teemvat/otp-inclass-w5.git'
+                git branch: 'master', url: 'https://github.com/teemvat/InClassW5.git'
             }
         }
 
