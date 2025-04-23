@@ -7,7 +7,7 @@ pipeline {
         DOCKER_TAG = 'latest'
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21'
         JMETER_HOME = 'C:\\tools\\apache-jmeter-5.6.3'
-        PATH = "${JAVA_HOME}\\bin;${JMETER_HOME}\\bin;${PATH}"
+        PATH = "${JAVA_HOME}\\bin;${JMETER_HOME}\\bin;${env.PATH}"
     }
 
     stages {
@@ -26,10 +26,9 @@ pipeline {
 
         stage('Non-Functional Test') {
             steps {
-                bat 'jmeter -n -t /demo.jmx -l result.jtl'
+                bat 'jmeter -n -t demo.jmx -l result.jtl'
             }
         }
-
 
         stage('SonarQube Analysis') {
             steps {
@@ -40,7 +39,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Docker Build & Push') {
             steps {
                 withCredentials([usernamePassword(
@@ -56,13 +55,12 @@ pipeline {
                 }
             }
         }
+    }
 
-        post {
-            always {
-                archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
-                perfReport sourceDataFiles: 'result.jtl'
-            }
+    post {
+        always {
+            archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
+            perfReport sourceDataFiles: 'result.jtl'
         }
-
     }
 }
